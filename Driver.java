@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
+	
 	//EVERY ANIMATED DRIVER YOU COULD EVER NEED IS HERE
 	//variables here
 	int fps = 60;
@@ -14,6 +15,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	int[] y = {200,100,200,500};
 	ArrayList<Slider> sliders = new ArrayList<Slider>();
 	int score=0;
+	
 	//keys
 	boolean keys[] = new boolean[256];
 	int mouseX = 0;
@@ -24,6 +26,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void paint(Graphics g) {
+		
 		super.paintComponent(g);
 
 		// background
@@ -31,17 +34,23 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		g.fillRect(0, 0, 2000, 1600);
 
 		g.setColor(new Color(0,0,0));
+		
 		if (press) {
 			g.setColor(new Color(255,255,255));
 		}
+		
 		for (int i = 0; i < sliders.size(); i++) {
 			Slider s = sliders.get(i);
+			
 			for (int j = 0; j < s.getX().length; j++) {
 				g.drawOval(s.getX()[j]-25, s.getY()[j]-25, 50, 50);
 			}
+			
 			g.drawOval(s.circleX-15, s.circleY-15, 30, 30);
 		}
+		
 		g.drawRect(mouseX, mouseY, 30, 30);
+		
 	}
 
 	public void update() {
@@ -49,13 +58,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 		//if (s.returnScore()!=-1)System.out.println(s.returnScore());
 		
-		//keypress
-		if (keys[90]||keys[88]) {
+		//key press
+		if (keys[90] || keys[88]) {
 			press = true;
-		}
-		else {
+		} else {
 			press = false;
 		}
+		
 	}
 
 	@Override
@@ -66,7 +75,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	public static void main(String[] args) {
 		Driver d = new Driver();
-
 	}
 
 	public Driver() {
@@ -100,11 +108,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 	Timer t;
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		press = true;
 
 	}
+	
 	@Override
 	public void mouseMoved(MouseEvent m) {
 		// TODO Auto-generated method stub
@@ -112,6 +122,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		mouseX =m.getX();
 		mouseY =m.getY();
 	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		keys[e.getKeyCode()] = true;
@@ -127,8 +138,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		// TODO Auto-generated method stub
 
 	}
-
-
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -157,7 +166,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	public void mouseDragged(MouseEvent arg0) {
 
 	}
-
 
 
 }

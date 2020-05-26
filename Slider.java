@@ -1,13 +1,16 @@
 import java.util.ArrayList;
 
 public class Slider {
+	
 	int[] x;
 	int[] y;
+	
 	int startTime;
 	int size;
 	int pointsDone;
 	int pointsMissed;
 	boolean checkForMiss;
+	
 	int circleX;
 	int circleY;
 	int speed;
@@ -27,9 +30,11 @@ public class Slider {
 	}
 	
 	public void move() {
+		
 		int tarX = x[pointsDone];
 		int tarY = y[pointsDone];
 		double angle = Math.atan2(tarY-y[pointsDone-1], tarX-x[pointsDone-1]);
+		
 		circleX += (int)(speed*Math.cos(angle));
 		circleY += (int)(speed*Math.sin(angle));
 		
@@ -41,15 +46,18 @@ public class Slider {
 	}
 	
 	public void mouse(int mx, int my, boolean press) {
+		
 		if (!checkForMiss) return;
 		if (!press||Math.sqrt((circleX-mx)*(circleX-mx)+(circleY-my)*(circleY-my))>100) {
 			//System.out.println("DIST: "+Math.sqrt((circleX-mx)*(circleX-mx)+(circleY-my)*(circleY-my)));
 			checkForMiss=false;
 			pointsMissed++;
 		}
+		
 	}
 	
 	public void update(int t, int mx, int my, boolean press) {
+		
 		if (t > startTime) active = true;
 		if (pointsDone>=x.length) active = false;
 		
@@ -57,6 +65,7 @@ public class Slider {
 			move();
 			mouse(mx,my,press);
 		}
+		
 	}
 	
 	public boolean isActive() {
@@ -66,9 +75,11 @@ public class Slider {
 	public int[] getX() {
 		return x;
 	}
+	
 	public int[] getY() {
 		return y;
 	}
+	
 	public int returnScore() {
 		System.out.println("p missed "+pointsMissed+"/"+pointsDone);
 		if (active) return -1;

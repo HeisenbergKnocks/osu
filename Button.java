@@ -1,5 +1,6 @@
 
 public class Button {
+	
 	public int x;
 	public int y;
 	
@@ -7,4 +8,5 @@ public class Button {
 		x = X;
 		y = Y;
 	}
+	
 }

@@ -1,5 +1,6 @@
 
 public class Circle {
+	
 	int x;
 	int y;
 	int size;
@@ -11,7 +12,9 @@ public class Circle {
 		size = Size;
 		startTime = Time;
 	}
+	
 	public void spawn() {
 		
 	}
+	
 }
