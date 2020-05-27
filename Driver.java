@@ -6,7 +6,6 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
-	
 	//EVERY ANIMATED DRIVER YOU COULD EVER NEED IS HERE
 	//variables here
 	int fps = 60;
@@ -16,6 +15,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	ArrayList<Slider> sliders = new ArrayList<Slider>();
 	int score=0;
 	
+	int responseTime = 75;
+	int circleSize = 100;
 	//keys
 	boolean keys[] = new boolean[256];
 	int mouseX = 0;
@@ -26,7 +27,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void paint(Graphics g) {
-		
 		super.paintComponent(g);
 
 		// background
@@ -34,37 +34,42 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		g.fillRect(0, 0, 2000, 1600);
 
 		g.setColor(new Color(0,0,0));
-		
 		if (press) {
 			g.setColor(new Color(255,255,255));
 		}
-		
 		for (int i = 0; i < sliders.size(); i++) {
 			Slider s = sliders.get(i);
+			//skip premature circles
+			if (s.startTime>tick+responseTime) continue;
+			if (s.finished) continue;
+			
+			if (s.startTime-tick>0)
+				g.drawOval(s.getX()[0]-circleSize/2-(s.startTime-tick)/2, s.getY()[0]-circleSize/2-(s.startTime-tick)/2, circleSize+s.startTime-tick, circleSize+s.startTime-tick);
 			
 			for (int j = 0; j < s.getX().length; j++) {
-				g.drawOval(s.getX()[j]-25, s.getY()[j]-25, 50, 50);
+				g.drawOval(s.getX()[j]-circleSize/2, s.getY()[j]-circleSize/2, circleSize, circleSize);
 			}
-			
-			g.drawOval(s.circleX-15, s.circleY-15, 30, 30);
+			g.drawOval(s.getCircleX()-15, s.getCircleY()-15, 30, 30);
 		}
-		
 		g.drawRect(mouseX, mouseY, 30, 30);
-		
 	}
 
 	public void update() {
 		//s.update(test,mouseX,mouseY,press);
 	
 		//if (s.returnScore()!=-1)System.out.println(s.returnScore());
-		
-		//key press
-		if (keys[90] || keys[88]) {
+		for (int i = 0; i < sliders.size(); i++) {
+			sliders.get(i).update(tick, mouseX, mouseY, press);
+		}
+		//keypress
+		if (keys[90]||keys[88]) {
 			press = true;
-		} else {
+		}
+		else {
 			press = false;
 		}
 		
+		tick++;
 	}
 
 	@Override
@@ -75,6 +80,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	public static void main(String[] args) {
 		Driver d = new Driver();
+
 	}
 
 	public Driver() {
@@ -105,16 +111,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 		// Set the blank cursor to the JFrame.
 		//f.getContentPane().setCursor(blankCursor);
+		sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,250,350},50));
+		sliders.add(new Slider(new int[] {300,200,300}, new int[] {100,200,500},200));
+		sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,450,350},300));
 	}
 
 	Timer t;
-	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		press = true;
 
 	}
-	
 	@Override
 	public void mouseMoved(MouseEvent m) {
 		// TODO Auto-generated method stub
@@ -122,7 +129,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		mouseX =m.getX();
 		mouseY =m.getY();
 	}
-	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		keys[e.getKeyCode()] = true;
@@ -138,6 +144,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		// TODO Auto-generated method stub
 
 	}
+
+
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -166,6 +174,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	public void mouseDragged(MouseEvent arg0) {
 
 	}
+
 
 
 }
