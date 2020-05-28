@@ -34,6 +34,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		g.fillRect(0, 0, 2000, 1600);
 
 		g.setColor(new Color(0,0,0));
+		g.drawString("score: "+score, 25, 25);
+		
+		
 		if (press) {
 			g.setColor(new Color(255,255,255));
 		}
@@ -49,16 +52,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			for (int j = 0; j < s.getX().length; j++) {
 				g.drawOval(s.getX()[j]-circleSize/2, s.getY()[j]-circleSize/2, circleSize, circleSize);
 			}
-			g.drawOval(s.getCircleX()-15, s.getCircleY()-15, 30, 30);
+			g.drawOval(s.getCircleX()-circleSize/2, s.getCircleY()-circleSize/2, circleSize, circleSize);
 		}
-		g.drawRect(mouseX, mouseY, 30, 30);
+		g.drawOval(mouseX-20, mouseY-20, 40, 40);
 	}
 
 	public void update() {
-		//s.update(test,mouseX,mouseY,press);
 	
 		//if (s.returnScore()!=-1)System.out.println(s.returnScore());
+		score = 0;
 		for (int i = 0; i < sliders.size(); i++) {
+			score += sliders.get(i).returnScore();
 			sliders.get(i).update(tick, mouseX, mouseY, press);
 		}
 		//keypress
@@ -113,7 +117,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		//f.getContentPane().setCursor(blankCursor);
 		sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,250,350},50));
 		sliders.add(new Slider(new int[] {300,200,300}, new int[] {100,200,500},200));
-		sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,450,350},300));
+		sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,450,350},350));
 	}
 
 	Timer t;

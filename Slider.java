@@ -80,8 +80,8 @@ public class Slider {
 	}
 	
 	public int returnScore() {
-		System.out.println("p missed "+pointsMissed+"/"+pointsDone);
-		if (!finished) return -1;
+		//System.out.println("p missed "+pointsMissed+"/"+pointsDone);
+		if (!finished) return 0;
 		if (pointsMissed==0) return 300;
 		else if (1-pointsMissed/pointsDone>=0.66) return 100;
 		else if (1-pointsMissed/pointsDone>=0.33) return 50;
