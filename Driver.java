@@ -132,16 +132,49 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 
 		//the song starts at t=100
+		//intro
 		circles.add(new Circle(400,400,100));
 		circles.add(new Circle(500,300,250));
 		circles.add(new Circle(400,300,300));
 		circles.add(new Circle(500,200,350));
 		circles.add(new Circle(100,200,400));
 		
-		circles.add(new Circle(200,200,550));
-		//sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,250,350},250));
-		//sliders.add(new Slider(new int[] {300,200,300}, new int[] {100,200,500},400));
-		//sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,450,350},550));
+		circles.add(new Circle(400,400,475));
+		circles.add(new Circle(500,300,525));
+		circles.add(new Circle(400,300,575));
+		circles.add(new Circle(500,200,625));
+		circles.add(new Circle(100,200,675));
+		circles.add(new Circle(200,200,725));
+		circles.add(new Circle(300,200,775));
+		circles.add(new Circle(400,400,825));
+		
+		//theme 1 part 1
+		circles.add(new Circle(100,200,950));
+		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},975));
+		circles.add(new Circle(500,200,1025));
+		circles.add(new Circle(400,300,1050));
+		circles.add(new Circle(500,400,1075));
+		circles.add(new Circle(400,500,1100));
+		
+		circles.add(new Circle(100,600,950+175));
+		sliders.add(new Slider(new int[] {250,350}, new int[] {600,600},975+175));
+		circles.add(new Circle(500,600,1025+175));
+		circles.add(new Circle(400,500,1050+175));
+		circles.add(new Circle(500,400,1075+175));
+		circles.add(new Circle(400,300,1100+175));
+		
+		//theme 1 part 2
+		circles.add(new Circle(100,200,1350));
+		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},1375));
+		circles.add(new Circle(500,200,1425));
+		circles.add(new Circle(400,300,1450));
+		circles.add(new Circle(500,400,1475));
+		circles.add(new Circle(400,500,1500));
+		
+		
+		//TEMPLATES
+		//circles.add(new Circle(200,200,950));
+		//sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,250,350}, 250));
 		
 		
 	}
