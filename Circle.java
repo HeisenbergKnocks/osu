@@ -1,20 +1,59 @@
+import java.util.ArrayList;
 
 public class Circle {
-	
 	int x;
 	int y;
-	int size;
 	int startTime;
+  int timeClicked;
+	boolean finished;
 	
-	public Circle(int X, int Y, int Size, int Time) {
-		x = X;
-		y = Y;
-		size = Size;
-		startTime = Time;
-	}
-	
-	public void spawn() {
+	public Circle(int x, int y, int Time) {
+		this.x = x;
+		this.y = y;
 		
+		startTime = Time;
+		finished = false;
+		timeClicked = 0;
 	}
 	
+	
+	public void mouse(int t, int mx, int my, boolean press) {
+		if (press && Math.sqrt((x-mx)*(x-mx)+(y-my)*(y-my)) < 100) {
+      timeClicked = t;
+		}
+	}
+	
+	public void update(int t, int mx, int my, boolean press) {
+
+		if (t-startTime > 10) finished = true;
+		
+		if (isActive(t)) {
+			mouse(t,mx,my,press);
+		}
+	}
+	
+	public boolean isActive(int t) {
+		if (finished) return false;
+		if (t > startTime - 10) return true;
+		return false;
+	}
+	
+	public int getX() {
+		return x;
+	}
+  
+	public int getY() {
+		return y;
+	}
+	
+	public int returnScore() {
+      if(!finished) return 0;
+      if(Math.abs(timeClicked - startTime) < 5) return 300;
+      else if(Math.abs(timeClicked - startTime) < 7) return 100;
+      else if(Math.abs(timeClicked - startTime) < 10) return 50;
+      return 0;
+	}
+	
+
 }
+
