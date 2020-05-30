@@ -1,7 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.Timer;
 
@@ -13,6 +18,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	int[] x = {100,200,300,300};
 	int[] y = {200,100,200,500};
 	ArrayList<Slider> sliders = new ArrayList<Slider>();
+	ArrayList<Circle> circles = new ArrayList<Circle>();
 	int score=0;
 	
 	int responseTime = 75;
@@ -30,16 +36,29 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		super.paintComponent(g);
 		
 		// background
-		g.setColor(new Color(100, 231, 100));
+		g.setColor(new Color(0, 0, 0));
 		g.fillRect(0, 0, 2000, 1600);
 
-		g.setColor(new Color(0,0,0));
+		g.setColor(new Color(255,255,255));
 		g.drawString("score: "+score, 25, 25);
 		
 		
 		if (press) {
-			g.setColor(new Color(255,255,255));
+			g.setColor(new Color(100,100,100));
 		}
+    //circles
+    for (int i = 0; i < circles.size(); i++) {
+			Circle s = circles.get(i);
+			//skip premature circles
+			if (s.startTime>tick+responseTime) continue;
+			if (s.finished) continue;
+			
+			if (s.startTime-tick>0)
+				g.drawOval(s.getX()-circleSize/2-(s.startTime-tick)/2, s.getY()-circleSize/2-(s.startTime-tick)/2, circleSize+s.startTime-tick, circleSize+s.startTime-tick);
+
+			g.drawOval(s.getX()-circleSize/2, s.getY()-circleSize/2, circleSize, circleSize);
+		}
+    //sliders
 		for (int i = 0; i < sliders.size(); i++) {
 			Slider s = sliders.get(i);
 			//skip premature circles
@@ -58,12 +77,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 	public void update() {
-	
+		if (tick==98) playSound();
 		//if (s.returnScore()!=-1)System.out.println(s.returnScore());
 		score = 0;
 		for (int i = 0; i < sliders.size(); i++) {
 			score += sliders.get(i).returnScore();
 			sliders.get(i).update(tick, mouseX, mouseY, press);
+		}
+		for (int i = 0; i < circles.size(); i++) {
+			score += circles.get(i).returnScore();
+			circles.get(i).update(tick, mouseX, mouseY, press);
 		}
 		//keypress
 		if (keys[90]||keys[88]) {
@@ -106,18 +129,21 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 		/*   init stuff    */
 		
-		// Transparent 16 x 16 pixel cursor image.
-		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 
-		// Create a new blank cursor.
-		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-		    cursorImg, new Point(0, 0), "blank cursor");
 
-		// Set the blank cursor to the JFrame.
-		//f.getContentPane().setCursor(blankCursor);
-		sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,250,350},50));
-		sliders.add(new Slider(new int[] {300,200,300}, new int[] {100,200,500},200));
-		sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,450,350},350));
+		//the song starts at t=100
+		circles.add(new Circle(400,400,100));
+		circles.add(new Circle(500,300,250));
+		circles.add(new Circle(400,300,300));
+		circles.add(new Circle(500,200,350));
+		circles.add(new Circle(100,200,400));
+		
+		circles.add(new Circle(200,200,550));
+		//sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,250,350},250));
+		//sliders.add(new Slider(new int[] {300,200,300}, new int[] {100,200,500},400));
+		//sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,450,350},550));
+		
+		
 	}
 
 	Timer t;
@@ -179,6 +205,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	}
 
-
+	
+	public void playSound() {
+	    try {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Winter Wind x Megalovania.wav").getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	    } catch(Exception ex) {
+	        System.out.println("Error with playing sound.");
+	        ex.printStackTrace();
+	    }
+	}
 
 }
