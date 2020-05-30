@@ -28,7 +28,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	@Override
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-
+		
 		// background
 		g.setColor(new Color(100, 231, 100));
 		g.fillRect(0, 0, 2000, 1600);
