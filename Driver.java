@@ -20,6 +20,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	ArrayList<Slider> sliders = new ArrayList<Slider>();
 	ArrayList<Circle> circles = new ArrayList<Circle>();
 	int score=0;
+	Clip clip;
 	
 	int responseTime = 75;
 	int circleSize = 100;
@@ -30,7 +31,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	boolean press=false;
 	
 	int tick = 0;
-
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -69,6 +70,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				g.drawOval(s.getX()[0]-circleSize/2-(s.startTime-tick)/2, s.getY()[0]-circleSize/2-(s.startTime-tick)/2, circleSize+s.startTime-tick, circleSize+s.startTime-tick);
 			
 			for (int j = 0; j < s.getX().length; j++) {
+				if (j<s.getX().length-1)
+					g.drawLine(s.getX()[j]-circleSize/2, s.getY()[j]-circleSize/2, s.getX()[j+1]-circleSize/2, s.getY()[j+1]-circleSize/2);
 				g.drawOval(s.getX()[j]-circleSize/2, s.getY()[j]-circleSize/2, circleSize, circleSize);
 			}
 			g.drawOval(s.getCircleX()-circleSize/2, s.getCircleY()-circleSize/2, circleSize, circleSize);
@@ -77,7 +80,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 	public void update() {
-		if (tick==98) playSound();
+		if (tick==98) clip.start();
 		//if (s.returnScore()!=-1)System.out.println(s.returnScore());
 		score = 0;
 		for (int i = 0; i < sliders.size(); i++) {
@@ -122,13 +125,21 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		f.add(this);
 
-		Timer t = new Timer(17, this);
+		Timer t = new Timer(20, this);
 		t.start();
 		f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		f.setVisible(true);
 
 		/*   init stuff    */
-		
+	    try {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Winter Wind x Megalovania shortened.wav").getAbsoluteFile());
+	        clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        //clip.start();
+	    } catch(Exception ex) {
+	        System.out.println("Error with playing sound.");
+	        ex.printStackTrace();
+	    }
 
 
 		//the song starts at t=100
@@ -236,19 +247,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 
-	}
-
-	
-	public void playSound() {
-	    try {
-	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Winter Wind x Megalovania.wav").getAbsoluteFile());
-	        Clip clip = AudioSystem.getClip();
-	        clip.open(audioInputStream);
-	        clip.start();
-	    } catch(Exception ex) {
-	        System.out.println("Error with playing sound.");
-	        ex.printStackTrace();
-	    }
 	}
 
 }
