@@ -46,11 +46,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		g.setFont(scoreFont);
 		g.setColor(new Color(255,255,255));
 		g.drawString("score: "+score, 25, 25);
-		
-		
-		if (press) {
-			g.setColor(new Color(100,100,100));
-		}
 	
 		g.setFont(numberFont);
 		//circles
@@ -64,7 +59,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 					g.drawOval(s.getX()-circleSize/2-(s.startTime-tick)/2, s.getY()-circleSize/2-(s.startTime-tick)/2, circleSize+s.startTime-tick, circleSize+s.startTime-tick);
 	
 				g.drawOval(s.getX()-circleSize/2, s.getY()-circleSize/2, circleSize, circleSize);
-				
 				g.drawString(""+s.number, s.getX()-12, s.getY()+12);
 		}
 	    //sliders
@@ -80,9 +74,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			for (int j = 0; j < s.getX().length; j++) {
 				if (j<s.getX().length-1)
 					g.drawLine(s.getX()[j], s.getY()[j], s.getX()[j+1], s.getY()[j+1]);
+				//g.setColor(new Color(0,0,0));
+				//g.fillOval(s.getX()[j]-circleSize/2, s.getY()[j]-circleSize/2, circleSize, circleSize);
+				//g.setColor(new Color(255,255,255));
 				g.drawOval(s.getX()[j]-circleSize/2, s.getY()[j]-circleSize/2, circleSize, circleSize);
+				g.drawString(""+(s.number+j), s.getX()[j]-12, s.getY()[j]+12);
 			}
 			g.drawOval(s.getCircleX()-circleSize/2, s.getCircleY()-circleSize/2, circleSize, circleSize);
+		}
+		
+		if (press) {
+			g.setColor(new Color(100,100,100));
 		}
 		g.drawOval(mouseX-20, mouseY-20, 40, 40);
 	}
@@ -186,9 +188,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(100,200,1350,1));
 		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},1375,2));
 		circles.add(new Circle(500,200,1425,4));
-		circles.add(new Circle(400,300,1450,5));
-		circles.add(new Circle(500,400,1475,6));
-		circles.add(new Circle(400,500,1500,7));
+		circles.add(new Circle(500,400,1450,5));
+		sliders.add(new Slider(new int[] {350,250}, new int[] {400,400},1475,6));
+		circles.add(new Circle(100,400,1525,8));
 		
 		//sliders.add(new Slider(new int[] {250,350,300}, new int[] {200,200,300}, 1550));
 		
