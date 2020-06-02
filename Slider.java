@@ -12,8 +12,9 @@ public class Slider {
 	double circleY;
 	int speed;
 	boolean finished;
+	int number;
 	
-	public Slider(int[] x, int[] y, int Time) {
+	public Slider(int[] x, int[] y, int Time, int n) {
 		this.x = x;
 		this.y = y;
 		
@@ -25,6 +26,8 @@ public class Slider {
 		checkForMiss = true;
 		pointsMissed = 0;
 		finished = false;
+		
+		number = n;
 	}
 	
 	public void move() {

@@ -14,7 +14,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	//EVERY ANIMATED DRIVER YOU COULD EVER NEED IS HERE
 	//variables here
 	int fps = 60;
-	int test = 0;
 	int[] x = {100,200,300,300};
 	int[] y = {200,100,200,500};
 	ArrayList<Slider> sliders = new ArrayList<Slider>();
@@ -90,7 +89,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 	public void update() {
-		if (tick==98) clip.start();
+		if (tick==100) clip.start();
 		//if (s.returnScore()!=-1)System.out.println(s.returnScore());
 		score = 0;
 		for (int i = 0; i < sliders.size(); i++) {
@@ -101,6 +100,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			score += circles.get(i).returnScore();
 			circles.get(i).update(tick, mouseX, mouseY, press);
 		}
+		
 		//keypress
 		if (keys[90]||keys[88]) {
 			press = true;
