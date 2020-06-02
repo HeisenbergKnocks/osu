@@ -11,6 +11,21 @@ import javax.swing.*;
 import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
+	/*INSTRUCTIONS
+	 * Press 'z' or 'x' or click to interact with objects
+	 * There are two types of objects: circles and sliders
+	 * 
+	 * Click on the circles when the outer ring reaches the inner ring
+	 * The circles are numbered in order of completion
+	 * 
+	 * Sliders are a series of circles connected by a line.  When a slider starts, a moving circle will travel between the numbered circles
+	 * Move your mouse over the moving circle while clicking or holding 'x' or 'z'.
+	 * 
+	 * The rhythm of the song will help you time your clicks
+	 * 
+	 * The more accurate you are with your timing, the more points you get!
+	 * Your accuracy is determined by the points you got/total points.  Get the highest accuracy you can!
+	 */
 	//EVERY ANIMATED DRIVER YOU COULD EVER NEED IS HERE
 	//variables here
 	int fps = 60;
@@ -18,7 +33,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	int[] y = {200,100,200,500};
 	ArrayList<Slider> sliders = new ArrayList<Slider>();
 	ArrayList<Circle> circles = new ArrayList<Circle>();
-	int score=0;
+	ArrayList<Particle> particles = new ArrayList<Particle>();
+	int score = 0;
+	int totalScore = 0;
 	Clip clip;
 	
 	int responseTime = 50;
@@ -46,6 +63,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		g.setFont(scoreFont);
 		g.setColor(new Color(255,255,255));
 		g.drawString("score: "+score, 25, 25);
+		g.drawString("acc: "+Math.round(100*score/(totalScore+0.1))+"%", 25, 50);
 	
 		g.setFont(numberFont);
 		//circles
@@ -82,26 +100,40 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			}
 			g.drawOval(s.getCircleX()-circleSize/2, s.getCircleY()-circleSize/2, circleSize, circleSize);
 		}
+		//particles
+		for (int i = 0; i < particles.size(); i++) {
+			Particle p = particles.get(i);
+			drawParticle(g,p.x,p.y,p.angle);
+		}
 		
 		if (press) {
 			g.setColor(new Color(100,100,100));
 		}
-		g.drawOval(mouseX-20, mouseY-20, 40, 40);
+		g.drawOval(mouseX-10, mouseY-10, 20, 20);
 	}
 
 	public void update() {
 		if (tick==100) clip.start();
 		//if (s.returnScore()!=-1)System.out.println(s.returnScore());
+		totalScore = 0;
 		score = 0;
 		for (int i = 0; i < sliders.size(); i++) {
+			if (sliders.get(i).finished) totalScore+=300;
 			score += sliders.get(i).returnScore();
 			sliders.get(i).update(tick, mouseX, mouseY, press);
 		}
 		for (int i = 0; i < circles.size(); i++) {
+			if (circles.get(i).finished) totalScore+=300;
 			score += circles.get(i).returnScore();
 			circles.get(i).update(tick, mouseX, mouseY, press);
 		}
-		
+		for (int i = 0; i < particles.size(); i++) {
+			particles.get(i).update();
+			if (!particles.get(i).isActive()) {
+				particles.remove(i);
+				i--;
+			}
+		}
 		//keypress
 		if (keys[90]||keys[88]||mouseDown) {
 			press = true;
@@ -109,6 +141,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		else {
 			press = false;
 		}
+		if (press&&tick%7==0) spawnParticles(1,mouseX,mouseY);
 		
 		tick++;
 	}
@@ -240,19 +273,37 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		
 	}
+	
+	public void drawParticle(Graphics g, int x, int y, double angle) {
+		int[] xPoints = new int[10];
+		int[] yPoints = new int[10];
+		int r = 9;
+		for (int i = 0; i < 5; i++) {
+			xPoints[i*2] = x + (int)(r*Math.cos(angle+i*0.4*Math.PI));
+			yPoints[i*2] = y + (int)(r*Math.sin(angle+i*0.4*Math.PI));
+			
+			xPoints[i*2+1] = x + (int)(r/2*Math.cos(angle+(i+0.5)*0.4*Math.PI));
+			yPoints[i*2+1] = y + (int)(r/2*Math.sin(angle+(i+0.5)*0.4*Math.PI));
+		}
+		g.drawPolygon(xPoints, yPoints, 10);
+	}
+	public void spawnParticles(int num, int x, int y) {
+		for (int i = 0; i < num; i++) {
+			particles.add(new Particle(x,y));
+		}
+	}
 
 	Timer t;
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		mouseDown = true;
+		//mouseDown = true;
 
 	}
 	@Override
 	public void mouseMoved(MouseEvent m) {
-		// TODO Auto-generated method stub
 		m.translatePoint(-6, -31);
-		mouseX =m.getX();
-		mouseY =m.getY();
+		mouseX = m.getX();
+		mouseY = m.getY();
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -291,13 +342,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		mouseDown = false;
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent m) {
-		mouseDown = true;
+		//mouseDown = true;
 		m.translatePoint(-6, -31);
 		mouseX =m.getX();
 		mouseY =m.getY();
