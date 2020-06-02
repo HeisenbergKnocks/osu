@@ -13,6 +13,7 @@ public class Slider {
 	int speed;
 	boolean finished;
 	int number;
+	boolean completionFrame;
 	
 	public Slider(int[] x, int[] y, int Time, int n) {
 		this.x = x;
@@ -26,6 +27,7 @@ public class Slider {
 		checkForMiss = true;
 		pointsMissed = 0;
 		finished = false;
+		completionFrame = false;
 		
 		number = n;
 	}
@@ -54,8 +56,11 @@ public class Slider {
 	}
 	
 	public void update(int t, int mx, int my, boolean press) {
-
-		if (pointsDone>=x.length) finished = true;
+		if (completionFrame) completionFrame = false;
+		if (pointsDone>=x.length) {
+			if (!finished) completionFrame = true;
+			finished = true;
+		}
 		
 		if (isActive(t)) {
 			move();

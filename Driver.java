@@ -26,14 +26,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 * The more accurate you are with your timing, the more points you get!
 	 * Your accuracy is determined by the points you got/total points.  Get the highest accuracy you can!
 	 */
-	//EVERY ANIMATED DRIVER YOU COULD EVER NEED IS HERE
+
 	//variables here
 	int fps = 60;
-	int[] x = {100,200,300,300};
-	int[] y = {200,100,200,500};
 	ArrayList<Slider> sliders = new ArrayList<Slider>();
 	ArrayList<Circle> circles = new ArrayList<Circle>();
 	ArrayList<Particle> particles = new ArrayList<Particle>();
+	ArrayList<Msg> messages = new ArrayList<Msg>();
 	int score = 0;
 	int totalScore = 0;
 	Clip clip;
@@ -54,11 +53,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	@Override
 	public void paint(Graphics g) {
-	super.paintComponent(g);
-	
-		// background
-		g.setColor(new Color(0, 0, 0));
-		g.fillRect(0, 0, 2000, 1600);
+		super.paintComponent(g);
+		g.setColor(new Color(0,0,0));
+		g.fillRect(0, 0, 801, 801);
 		
 		g.setFont(scoreFont);
 		g.setColor(new Color(255,255,255));
@@ -105,6 +102,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			Particle p = particles.get(i);
 			drawParticle(g,p.x,p.y,p.angle);
 		}
+		//messages
+		for (int i = 0; i < messages.size(); i++) {
+			Msg m = messages.get(i);
+			g.setColor(m.getColor());
+			g.drawString(m.text, m.x, m.y);
+		}
 		
 		if (press) {
 			g.setColor(new Color(100,100,100));
@@ -118,19 +121,70 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		totalScore = 0;
 		score = 0;
 		for (int i = 0; i < sliders.size(); i++) {
-			if (sliders.get(i).finished) totalScore+=300;
-			score += sliders.get(i).returnScore();
-			sliders.get(i).update(tick, mouseX, mouseY, press);
+			Slider s = sliders.get(i);
+			if (s.finished) totalScore+=300;
+			score += s.returnScore();
+			s.update(tick, mouseX, mouseY, press);
+			
+			if (s.completionFrame) {
+				int[] co = {0, 0, 0};
+				String m = ""+s.returnScore();
+				if (s.returnScore()==0) {
+					m = "X";
+					co[0]=255;
+				}
+				if (s.returnScore()==50) {
+					co[0]=200;
+					co[1]=100;
+				}
+				if (s.returnScore()==100) {
+					co[1]=255;
+				}
+				if (s.returnScore()==300) {
+					co[1]=200;
+					co[2]=255;
+				}
+				messages.add(new Msg(s.getCircleX(), s.getCircleY(), m, co));
+			}
 		}
 		for (int i = 0; i < circles.size(); i++) {
-			if (circles.get(i).finished) totalScore+=300;
-			score += circles.get(i).returnScore();
-			circles.get(i).update(tick, mouseX, mouseY, press);
+			Circle c = circles.get(i);
+			if (c.finished) totalScore+=300;
+			score += c.returnScore();
+			c.update(tick, mouseX, mouseY, press);
+			
+			if (c.completionFrame) {
+				int[] co = {0, 0, 0};
+				String m = ""+c.returnScore();
+				if (c.returnScore()==0) {
+					m = "X";
+					co[0]=255;
+				}
+				if (c.returnScore()==50) {
+					co[0]=200;
+					co[1]=100;
+				}
+				if (c.returnScore()==100) {
+					co[1]=255;
+				}
+				if (c.returnScore()==300) {
+					co[1]=200;
+					co[2]=255;
+				}
+				messages.add(new Msg(c.getX(), c.getY(), m, co));
+			}
 		}
 		for (int i = 0; i < particles.size(); i++) {
 			particles.get(i).update();
 			if (!particles.get(i).isActive()) {
 				particles.remove(i);
+				i--;
+			}
+		}
+		for (int i = 0; i < messages.size(); i++) {
+			messages.get(i).update();
+			if (!messages.get(i).isActive()) {
+				messages.remove(i);
 				i--;
 			}
 		}
@@ -156,7 +210,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		Driver d = new Driver();
 
 	}
-
+	
 	public Driver() {
 		JFrame f = new JFrame();
 		f.setTitle("Title");

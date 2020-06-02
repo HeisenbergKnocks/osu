@@ -7,6 +7,7 @@ public class Circle {
 	int timeClicked;
 	boolean finished;
 	int number;
+	boolean completionFrame;
 	
 	public Circle(int x, int y, int Time, int n) {
 		this.x = x;
@@ -17,6 +18,7 @@ public class Circle {
 		timeClicked = 0;
 		
 		number = n;
+		completionFrame = false;
 	}
 	
 	
@@ -24,12 +26,16 @@ public class Circle {
 		if (press && Math.sqrt((x-mx)*(x-mx)+(y-my)*(y-my))<100) {
 			timeClicked = t;
 			finished = true;
+			completionFrame = true;
 		}
 	}
 	
 	public void update(int t, int mx, int my, boolean press) {
-
-		if (t-startTime > 10) finished = true;
+		if (completionFrame) completionFrame = false;
+		if (t-startTime > 10) {
+			if (!finished) completionFrame = true;
+			finished = true;
+		}
 		
 		if (isActive(t)) {
 			mouse(t,mx,my,press);
