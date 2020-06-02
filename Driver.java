@@ -21,7 +21,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	int score=0;
 	Clip clip;
 	
-	int responseTime = 75;
+	int responseTime = 50;
 	int circleSize = 100;
 	
 	Font numberFont = new Font("Arial",0,50);
@@ -31,6 +31,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	int mouseX = 0;
 	int mouseY = 0;
 	boolean press=false;
+	boolean mouseDown = false;
 	
 	int tick = 0;
 	
@@ -55,7 +56,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				if (s.finished) continue;
 				
 				if (s.startTime-tick>0)
-					g.drawOval(s.getX()-circleSize/2-(s.startTime-tick)/2, s.getY()-circleSize/2-(s.startTime-tick)/2, circleSize+s.startTime-tick, circleSize+s.startTime-tick);
+					g.drawOval(s.getX()-circleSize/2-(s.startTime-tick), s.getY()-circleSize/2-(s.startTime-tick), circleSize+(s.startTime-tick)*2, circleSize+(s.startTime-tick)*2);
 	
 				g.drawOval(s.getX()-circleSize/2, s.getY()-circleSize/2, circleSize, circleSize);
 				g.drawString(""+s.number, s.getX()-12, s.getY()+12);
@@ -68,8 +69,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			if (s.finished) continue;
 			
 			if (s.startTime-tick>0)
-				g.drawOval(s.getX()[0]-circleSize/2-(s.startTime-tick)/2, s.getY()[0]-circleSize/2-(s.startTime-tick)/2, circleSize+s.startTime-tick, circleSize+s.startTime-tick);
-			
+				g.drawOval(s.getX()[0]-circleSize/2-(s.startTime-tick), s.getY()[0]-circleSize/2-(s.startTime-tick), circleSize+(s.startTime-tick)*2, circleSize+(s.startTime-tick)*2);
+						
 			for (int j = 0; j < s.getX().length; j++) {
 				if (j<s.getX().length-1)
 					g.drawLine(s.getX()[j], s.getY()[j], s.getX()[j+1], s.getY()[j+1]);
@@ -102,7 +103,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		
 		//keypress
-		if (keys[90]||keys[88]) {
+		if (keys[90]||keys[88]||mouseDown) {
 			press = true;
 		}
 		else {
@@ -155,10 +156,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		//the song starts at t=100
 		//intro
 		circles.add(new Circle(400,400,100,1));
-		circles.add(new Circle(500,300,250,2));
-		circles.add(new Circle(400,300,300,3));
-		circles.add(new Circle(500,200,350,4));
-		circles.add(new Circle(100,200,400,5));
+		circles.add(new Circle(500,300,250-12,2));
+		circles.add(new Circle(400,300,300-12,3));
+		circles.add(new Circle(500,200,350-12,4));
+		circles.add(new Circle(100,200,400-12,5));
 		
 		circles.add(new Circle(400,400,475,1));
 		circles.add(new Circle(500,300,525,2));
@@ -177,20 +178,58 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(500,400,1075,6));
 		circles.add(new Circle(400,500,1100,7));
 		
-		circles.add(new Circle(100,600,950+175,1));
-		sliders.add(new Slider(new int[] {250,350}, new int[] {600,600},975+175,2));
-		circles.add(new Circle(500,600,1025+175,4));
-		circles.add(new Circle(400,500,1050+175,5));
-		circles.add(new Circle(500,400,1075+175,6));
-		circles.add(new Circle(400,300,1100+175,7));
+		circles.add(new Circle(100,600,1150-12,1));
+		sliders.add(new Slider(new int[] {250,350}, new int[] {600,600},1175-12,2));
+		circles.add(new Circle(500,600,1225-12,4));
+		circles.add(new Circle(400,500,1250-12,5));
+		circles.add(new Circle(500,400,1275-12,6));
+		circles.add(new Circle(400,300,1300-12,7));
 		
 		//theme 1 part 2
-		circles.add(new Circle(100,200,1350,1));
-		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},1375,2));
-		circles.add(new Circle(500,200,1425,4));
-		circles.add(new Circle(500,400,1450,5));
-		sliders.add(new Slider(new int[] {350,250}, new int[] {400,400},1475,6));
-		circles.add(new Circle(100,400,1525,8));
+		circles.add(new Circle(100,500,1325,1));
+		circles.add(new Circle(100,200,1350,2));
+		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},1375,3));
+		circles.add(new Circle(500,200,1425,5));
+		circles.add(new Circle(500,400,1450,6));
+		sliders.add(new Slider(new int[] {350,250}, new int[] {400,400},1475,7));
+		circles.add(new Circle(100,400,1525,9));
+		
+		circles.add(new Circle(100,300,1550-6,1));
+		circles.add(new Circle(100,200,1575-6,2));
+		sliders.add(new Slider(new int[] {250,450}, new int[] {200,200},1600-6,3));
+		circles.add(new Circle(600,200,1650+6,5));
+		
+		//theme 1 part 1 (again)
+		int o1 = 750;
+		circles.add(new Circle(100,200,950+o1,1));
+		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},975+o1, 2));
+		circles.add(new Circle(500,200,1025+o1,4));
+		circles.add(new Circle(400,300,1050+o1,5));
+		circles.add(new Circle(500,400,1075+o1,6));
+		circles.add(new Circle(400,500,1100+o1,7));
+		
+		circles.add(new Circle(100,600,1150-12+o1,1));
+		sliders.add(new Slider(new int[] {250,350}, new int[] {600,600},1175-12+o1,2));
+		circles.add(new Circle(500,600,1225-12+o1,4));
+		circles.add(new Circle(400,500,1250-12+o1,5));
+		circles.add(new Circle(500,400,1275-21+o1,6));
+		circles.add(new Circle(400,300,1300-12+o1,7));
+		circles.add(new Circle(200,350,1325-12+o1,8));
+		
+		//theme 1 part 3
+		circles.add(new Circle(150,300,2100-12,1));
+		circles.add(new Circle(200,250,2125-12,2));
+		circles.add(new Circle(250,200,2150-12,3));
+		circles.add(new Circle(200,400,2175-12,4));
+		
+		circles.add(new Circle(300,350,2225,1));
+		circles.add(new Circle(400,450,2250,2));
+		circles.add(new Circle(400,550,2275,3));
+		
+		sliders.add(new Slider(new int[] {150,300,225},new int[] {500,500,700},2300,1));
+		circles.add(new Circle(300,650,2425,2));
+		
+		//transition
 		
 		//sliders.add(new Slider(new int[] {250,350,300}, new int[] {200,200,300}, 1550));
 		
@@ -205,7 +244,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	Timer t;
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		press = true;
+		mouseDown = true;
 
 	}
 	@Override
@@ -247,18 +286,21 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		press = true;
+		mouseDown = true;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		press = false;
+		mouseDown = false;
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent arg0) {
-
+	public void mouseDragged(MouseEvent m) {
+		mouseDown = true;
+		m.translatePoint(-6, -31);
+		mouseX =m.getX();
+		mouseY =m.getY();
 	}
 
 }
