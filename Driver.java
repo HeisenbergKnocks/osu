@@ -25,10 +25,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 * 
 	 * The more accurate you are with your timing, the more points you get!
 	 * Your accuracy is determined by the points you got/total points.  Get the highest accuracy you can!
+	 * 
+	 * NOTICE: The game sometimes takes a few runs to warm up, so just restart it if the sound is off too much.
+	 * If the game isn't timed correctly after a couple test runs, change the lag multiplier below.
 	 */
-
+	
+	//Increase this number if the circles are spawning in too late, decrease if spawning too early
+	double lagMultiplier = 0.98;//default is 0.98
+	//^^^^^^^^^^^^^^^^^^^^^^^^^
+	
 	//variables here
-	int fps = 60;
 	ArrayList<Slider> sliders = new ArrayList<Slider>();
 	ArrayList<Circle> circles = new ArrayList<Circle>();
 	ArrayList<Particle> particles = new ArrayList<Particle>();
@@ -50,6 +56,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	boolean mouseDown = false;
 	
 	int tick = 0;
+	double fulltick = 0;
+	
 	
 	@Override
 	public void paint(Graphics g) {
@@ -110,7 +118,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		
 		if (press) {
-			g.setColor(new Color(100,100,100));
+			g.setColor(new Color(100, 100, 100));
 		}
 		g.drawOval(mouseX-10, mouseY-10, 20, 20);
 	}
@@ -143,6 +151,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				if (s.returnScore()==300) {
 					co[1]=200;
 					co[2]=255;
+					for (int p = 0; p < 3; p++) {
+						spawnParticles(2,75+30*p,25,1);
+					}
 				}
 				messages.add(new Msg(s.getCircleX(), s.getCircleY(), m, co));
 			}
@@ -170,6 +181,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				if (c.returnScore()==300) {
 					co[1]=200;
 					co[2]=255;
+					spawnParticles(3,mouseX,mouseY,1);
+					for (int p = 0; p < 3; p++) {
+						spawnParticles(2,75+30*p,25,1);
+					}
 				}
 				messages.add(new Msg(c.getX(), c.getY(), m, co));
 			}
@@ -195,9 +210,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		else {
 			press = false;
 		}
-		if (press&&tick%7==0) spawnParticles(1,mouseX,mouseY);
+		if (press&&tick%7==0) spawnParticles(1,mouseX,mouseY,4);
 		
-		tick++;
+		fulltick+=lagMultiplier;
+		tick = (int)fulltick;
 	}
 
 	@Override
@@ -241,7 +257,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 
 		//the song starts at t=100
-		//intro
 		circles.add(new Circle(400,400,100,1));
 		circles.add(new Circle(500,300,250-12,2));
 		circles.add(new Circle(400,300,300-12,3));
@@ -317,10 +332,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(300,650,2425,2));
 		
 		//transition
+		circles.add(new Circle(350,650,2450,1));
+		sliders.add(new Slider(new int[] {400,450}, new int[] {700,400}, 2475, 1));
+		circles.add(new Circle(500,650,2550,3));
+		sliders.add(new Slider(new int[] {450,400}, new int[] {700,500}, 2575, 4));
 		
-		//sliders.add(new Slider(new int[] {250,350,300}, new int[] {200,200,300}, 1550));
+		circles.add(new Circle(600,600,2650,1));
+		circles.add(new Circle(600,600,2700,1));
 		
-		
+		//ending
+		circles.add(new Circle(600,600,2500+50*16,1));
+		circles.add(new Circle(400,600,2500+50*17,2));
+		circles.add(new Circle(200,600,2500+50*18,3));
+		circles.add(new Circle(30,400,3500,1));//final note
 		//TEMPLATES
 		//circles.add(new Circle(200,200,950));
 		//sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,250,350}, 250));
@@ -341,9 +365,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		g.drawPolygon(xPoints, yPoints, 10);
 	}
-	public void spawnParticles(int num, int x, int y) {
+	public void spawnParticles(int num, int x, int y, int grav) {
 		for (int i = 0; i < num; i++) {
-			particles.add(new Particle(x,y));
+			particles.add(new Particle(x,y,grav));
 		}
 	}
 
@@ -351,7 +375,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		//mouseDown = true;
-
+		
 	}
 	@Override
 	public void mouseMoved(MouseEvent m) {
@@ -391,6 +415,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		//System.out.println("Tick: "+tick);
 		mouseDown = true;
 	}
 
