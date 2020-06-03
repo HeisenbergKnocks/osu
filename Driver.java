@@ -332,13 +332,21 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(300,650,2425,2));
 		
 		//transition
-		circles.add(new Circle(350,650,2450,1));
+		circles.add(new Circle(300,400,2450,1));
 		sliders.add(new Slider(new int[] {400,450}, new int[] {700,400}, 2475, 1));
 		circles.add(new Circle(500,650,2550,3));
 		sliders.add(new Slider(new int[] {450,400}, new int[] {700,500}, 2575, 4));
 		
 		circles.add(new Circle(600,600,2650,1));
-		circles.add(new Circle(600,600,2700,1));
+		circles.add(new Circle(200,200,2675,2));
+		circles.add(new Circle(200,600,2700,3));
+		circles.add(new Circle(600,200,2700,4));
+		circles.add(new Circle(600,600,2650,5));
+		circles.add(new Circle(200,200,2675,6));
+		circles.add(new Circle(200,600,2700,7));
+		circles.add(new Circle(600,200,2700,8));
+		
+		
 		
 		//ending
 		circles.add(new Circle(600,600,2500+50*16,1));
