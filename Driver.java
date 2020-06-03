@@ -27,7 +27,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 * Your accuracy is determined by the points you got/total points.  Get the highest accuracy you can!
 	 * 
 	 * NOTICE: The game sometimes takes a few runs to warm up, so just restart it if the sound is off too much.
-	 * If the game isn't timed correctly after a couple test runs, change the lag multiplier below.
+	 * If the game isn't timed correctly after a couple test runs, change the lag multiplier below or restart your computer.
 	 */
 	
 	//Increase this number if the circles are spawning in too late, decrease if spawning too early
@@ -48,6 +48,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	Font numberFont = new Font("Arial",0,50);
 	Font scoreFont = new Font("Arial",0,20);
+	//colors
+	ArrayList<Integer[]> colorChanges = new ArrayList<Integer[]>();//[tick, r, g, b]
+	int colorChangeIndex = 0;
+	ArrayList<Integer> pulses = new ArrayList<Integer>();//tick
+	int pulseIndex = 0;
+	int[] color = {0, 0, 0};
+	int[] targetColor = {255, 255, 255};
 	//keys
 	boolean keys[] = new boolean[256];
 	int mouseX = 0;
@@ -66,11 +73,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		g.fillRect(0, 0, 801, 801);
 		
 		g.setFont(scoreFont);
-		g.setColor(new Color(255,255,255));
+		g.setColor(new Color(color[0],color[1],color[2]));
 		g.drawString("score: "+score, 25, 25);
 		g.drawString("acc: "+Math.round(100*score/(totalScore+0.1))+"%", 25, 50);
 	
 		g.setFont(numberFont);
+		
 		//circles
 	    for (int i = 0; i < circles.size(); i++) {
 				Circle s = circles.get(i);
@@ -125,7 +133,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	public void update() {
 		if (tick==100) clip.start();
-		//if (s.returnScore()!=-1)System.out.println(s.returnScore());
+		//score calculation
 		totalScore = 0;
 		score = 0;
 		for (int i = 0; i < sliders.size(); i++) {
@@ -134,6 +142,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			score += s.returnScore();
 			s.update(tick, mouseX, mouseY, press);
 			
+			//effects
 			if (s.completionFrame) {
 				int[] co = {0, 0, 0};
 				String m = ""+s.returnScore();
@@ -164,6 +173,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			score += c.returnScore();
 			c.update(tick, mouseX, mouseY, press);
 			
+			//effects
 			if (c.completionFrame) {
 				int[] co = {0, 0, 0};
 				String m = ""+c.returnScore();
@@ -189,6 +199,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				messages.add(new Msg(c.getX(), c.getY(), m, co));
 			}
 		}
+		//particles
 		for (int i = 0; i < particles.size(); i++) {
 			particles.get(i).update();
 			if (!particles.get(i).isActive()) {
@@ -196,6 +207,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				i--;
 			}
 		}
+		//score
 		for (int i = 0; i < messages.size(); i++) {
 			messages.get(i).update();
 			if (!messages.get(i).isActive()) {
@@ -203,6 +215,29 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				i--;
 			}
 		}
+		//update colors
+		if (colorChangeIndex<colorChanges.size())
+			if (tick == colorChanges.get(colorChangeIndex)[0]) {
+				targetColor[0] =  colorChanges.get(colorChangeIndex)[1];
+				targetColor[1] =  colorChanges.get(colorChangeIndex)[2];
+				targetColor[2] =  colorChanges.get(colorChangeIndex)[3];
+				colorChangeIndex++;
+			}
+		
+		if (pulseIndex<pulses.size())
+			if (tick == pulses.get(pulseIndex)) {
+				color[0] =  Math.min(color[0]+50, 255);
+				color[1] =  Math.min(color[1]+50, 255);
+				color[2] =  Math.min(color[2]+50, 255);
+				pulseIndex++;
+			}
+		
+		for (int i = 0; i < 3; i++) {
+			if (Math.abs(color[i]-targetColor[i])>2) {
+				color[i] = color[i]+(targetColor[i]-color[i])/20;
+			}
+		}
+		
 		//keypress
 		if (keys[90]||keys[88]||mouseDown) {
 			press = true;
@@ -211,7 +246,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			press = false;
 		}
 		if (press&&tick%7==0) spawnParticles(1,mouseX,mouseY,4);
-		
+		//update tick
 		fulltick+=lagMultiplier;
 		tick = (int)fulltick;
 	}
@@ -272,7 +307,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(300,200,775,7));
 		circles.add(new Circle(400,400,825,8));
 		
+		
 		//theme 1 part 1
+		colorChanges.add(new Integer[] {950, 100, 255, 255});
 		circles.add(new Circle(100,200,950,1));
 		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},975, 2));
 		circles.add(new Circle(500,200,1025,4));
@@ -280,6 +317,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(500,400,1075,6));
 		circles.add(new Circle(400,500,1100,7));
 		
+		pulses.add(1150-12);
+		pulses.add(1250-12);
+		pulses.add(1350-12);
+		pulses.add(1450-12);
 		circles.add(new Circle(100,600,1150-12,1));
 		sliders.add(new Slider(new int[] {250,350}, new int[] {600,600},1175-12,2));
 		circles.add(new Circle(500,600,1225-12,4));
@@ -288,6 +329,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(400,300,1300-12,7));
 		
 		//theme 1 part 2
+		colorChanges.add(new Integer[] {1325, 255, 255, 0});
 		circles.add(new Circle(100,500,1325,1));
 		circles.add(new Circle(100,200,1350,2));
 		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},1375,3));
@@ -302,6 +344,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(600,200,1650+6,5));
 		
 		//theme 1 part 1 (again)
+		colorChanges.add(new Integer[] {1700, 100, 255, 255});
 		int o1 = 750;
 		circles.add(new Circle(100,200,950+o1,1));
 		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},975+o1, 2));
