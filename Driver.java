@@ -41,7 +41,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	ArrayList<Msg> messages = new ArrayList<Msg>();
 	int score = 0;
 	int totalScore = 0;
-	int[] results = {1,2,3,400};//[misses, 50, 100, 300]
+	int[] results = {0,0,0,0};//[misses, 50, 100, 300]
 	
 	
 	Clip clip;
@@ -284,6 +284,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			spawnParticles(5,100,650,1);
 			spawnParticles(5,700,650,1);
 			spawnParticles(5,700,150,1);
+			for (int i = 0; i < circles.size(); i++) {
+				if (circles.get(i).returnScore()==0) results[0]++;
+				if (circles.get(i).returnScore()==50) results[1]++;
+				if (circles.get(i).returnScore()==100) results[2]++;
+				if (circles.get(i).returnScore()==300) results[3]++;
+			}
 		}
 		
 		//update tick
@@ -526,12 +532,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
-		keys[e.getKeyCode()] = true;
+		if (e.getKeyCode()<=256) keys[e.getKeyCode()] = true;
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		keys[e.getKeyCode()] = false;
+		if (e.getKeyCode()<=256) keys[e.getKeyCode()] = false;
 	}
 
 	@Override
@@ -556,7 +562,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println("Tick: "+tick);
+		//System.out.println("Tick: "+tick);
 		mouseDown = true;
 	}
 
