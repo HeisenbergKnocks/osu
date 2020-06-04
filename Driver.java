@@ -41,6 +41,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	ArrayList<Msg> messages = new ArrayList<Msg>();
 	int score = 0;
 	int totalScore = 0;
+	int[] results = {1,2,3,400};//[misses, 50, 100, 300]
+	
+	
 	Clip clip;
 	
 	int responseTime = 50;
@@ -118,17 +121,23 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			}
 			g.drawOval(s.getCircleX()-circleSize/2, s.getCircleY()-circleSize/2, circleSize, circleSize);
 		}
+		//end screen
+		if (tick>circles.get(circles.size()-1).startTime+100) {
+			endScreen(g);
+		}
 		//particles
 		for (int i = 0; i < particles.size(); i++) {
 			Particle p = particles.get(i);
 			drawParticle(g,p.x,p.y,p.angle);
 		}
 		//messages
+		g.setFont(numberFont);
 		for (int i = 0; i < messages.size(); i++) {
 			Msg m = messages.get(i);
 			g.setColor(m.getColor());
 			g.drawString(m.text, m.x, m.y);
 		}
+
 		//mouse trail
 		for (int i = 0; i < trailX.length-1; i++) {
 			g.setColor(new Color(255-(255/trailX.length)*i,255-(255/trailX.length)*i,255-(255/trailX.length)*i));
@@ -269,6 +278,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			}
 		}
 		
+		//ending
+		if (tick==circles.get(circles.size()-1).startTime+100) {
+			spawnParticles(5,100,150,1);
+			spawnParticles(5,100,650,1);
+			spawnParticles(5,700,650,1);
+			spawnParticles(5,700,150,1);
+		}
+		
 		//update tick
 		fulltick+=lagMultiplier;
 		tick = (int)fulltick;
@@ -340,11 +357,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(500,400,1075,6));
 		circles.add(new Circle(400,500,1100,7));
 		
-		pulses.add(1150-12);
-		pulses.add(1200-12);
-		pulses.add(1250-12);
-		pulses.add(1300-12);
-		circles.add(new Circle(100,600,1150-12,1));
+		circles.add(new Circle(100,600,1150-12,1));pulses.add(1150-12);
 		sliders.add(new Slider(new int[] {250,350}, new int[] {600,600},1175-12,2));
 		circles.add(new Circle(500,600,1225-12,4));
 		circles.add(new Circle(400,500,1250-12,5));
@@ -353,65 +366,68 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//theme 1 part 2
 		colorChanges.add(new Integer[] {1325, 255, 255, 0});
-		circles.add(new Circle(100,500,1325,1));
-		circles.add(new Circle(100,200,1350,2));
+		circles.add(new Circle(100,500,1325,1));pulses.add(1325);
+		circles.add(new Circle(100,200,1350,2));pulses.add(1350);
 		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},1375,3));
-		circles.add(new Circle(500,200,1425,5));
-		circles.add(new Circle(500,400,1450,6));
+		circles.add(new Circle(500,200,1425,5));pulses.add(1425);
+		circles.add(new Circle(500,400,1450,6));pulses.add(1450);
 		sliders.add(new Slider(new int[] {350,250}, new int[] {400,400},1475,7));
 		circles.add(new Circle(100,400,1525,9));
 		
-		circles.add(new Circle(100,300,1550-6,1));
+		circles.add(new Circle(100,300,1550-6,1));pulses.add(1550-6);
 		circles.add(new Circle(100,200,1575-6,2));
 		sliders.add(new Slider(new int[] {250,450}, new int[] {200,200},1600-6,3));
-		circles.add(new Circle(600,200,1650+6,5));
+		circles.add(new Circle(600,200,1650+6,5));pulses.add(1650+6);
 		
 		//theme 1 part 1 (again)
 		colorChanges.add(new Integer[] {1700, 100, 255, 255});
 		int o1 = 750;
-		circles.add(new Circle(100,200,950+o1,1));
+		circles.add(new Circle(100,200,950+o1,1));pulses.add(950+o1);
 		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},975+o1, 2));
 		circles.add(new Circle(500,200,1025+o1,4));
-		circles.add(new Circle(400,300,1050+o1,5));
+		circles.add(new Circle(400,300,1050+o1,5));pulses.add(1050+o1);
 		circles.add(new Circle(500,400,1075+o1,6));
-		circles.add(new Circle(400,500,1100+o1,7));
+		circles.add(new Circle(400,500,1100+o1,7));pulses.add(1100+o1);
 		
-		circles.add(new Circle(100,600,1150-12+o1,1));
+		circles.add(new Circle(100,600,1150-12+o1,1));pulses.add(1150-12+o1);
 		sliders.add(new Slider(new int[] {250,350}, new int[] {600,600},1175-12+o1,2));
 		circles.add(new Circle(500,600,1225-12+o1,4));
 		circles.add(new Circle(400,500,1250-12+o1,5));
-		circles.add(new Circle(500,400,1275-21+o1,6));
+		circles.add(new Circle(500,400,1275-21+o1,6));pulses.add(1275-21+o1);
 		circles.add(new Circle(400,300,1300-12+o1,7));
-		circles.add(new Circle(200,350,1325-12+o1,8));
+		circles.add(new Circle(200,350,1325-12+o1,8));pulses.add(1325-12+o1);
 		
 		//theme 1 part 3
+		colorChanges.add(new Integer[] {2100-12, 255, 255, 0});
 		circles.add(new Circle(150,300,2100-12,1));
 		circles.add(new Circle(200,250,2125-12,2));
 		circles.add(new Circle(250,200,2150-12,3));
 		circles.add(new Circle(200,400,2175-12,4));
 		
-		circles.add(new Circle(300,350,2225,1));
+		circles.add(new Circle(300,350,2225,1));pulses.add(2225);
 		circles.add(new Circle(400,450,2250,2));
 		circles.add(new Circle(400,550,2275,3));
 		
 		sliders.add(new Slider(new int[] {150,300,225},new int[] {500,500,700},2300,1));
-		circles.add(new Circle(300,650,2425,2));
+		circles.add(new Circle(300,650,2425,2));pulses.add(2425);
 		
 		//transition
+		colorChanges.add(new Integer[] {2450, 255, 255, 255});
 		circles.add(new Circle(300,400,2450,1));
-		sliders.add(new Slider(new int[] {400,450}, new int[] {700,400}, 2475, 1));
+		sliders.add(new Slider(new int[] {400,450}, new int[] {700,500}, 2475, 1));
 		circles.add(new Circle(500,650,2550,3));
 		sliders.add(new Slider(new int[] {450,400}, new int[] {700,500}, 2575, 4));
 		
-		circles.add(new Circle(600,600,2650,1));
-		circles.add(new Circle(200,200,2675,2));
-		circles.add(new Circle(200,600,2700,3));
-		circles.add(new Circle(600,200,2725,4));
-		circles.add(new Circle(600,600,2750,5));
-		circles.add(new Circle(200,200,2775,6));
-		circles.add(new Circle(200,600,2800,7));
-		circles.add(new Circle(600,200,2825,8));
+		circles.add(new Circle(600,600,2650,1));pulses.add(2650);
+		circles.add(new Circle(200,200,2675,2));pulses.add(2675);
+		circles.add(new Circle(200,600,2700,3));pulses.add(2700);
+		circles.add(new Circle(600,200,2725,4));pulses.add(2725);
+		circles.add(new Circle(600,600,2750,5));pulses.add(2750);
+		circles.add(new Circle(200,200,2775,6));pulses.add(2775);
+		circles.add(new Circle(200,600,2800,7));pulses.add(2800);
+		circles.add(new Circle(600,200,2825,8));pulses.add(2825);
 		
+		colorChanges.add(new Integer[] {2862, 255, 255, 0});
 		circles.add(new Circle(500,200,2862,1));
 		circles.add(new Circle(400,200,2887,2));
 		circles.add(new Circle(300,200,2912,3));
@@ -422,6 +438,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(100,400,3012,7));
 		circles.add(new Circle(100,500,3025,8));
 		
+		colorChanges.add(new Integer[] {3050, 100, 255, 255});
 		circles.add(new Circle(200,500,3050,1));
 		circles.add(new Circle(200,400,3075,2));
 		circles.add(new Circle(200,300,3100,3));
@@ -433,10 +450,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(500,100,3225,8));
 		
 		//ending
-		circles.add(new Circle(600,600,2500+50*16+12,1));
-		circles.add(new Circle(400,600,2500+50*17+12,2));
-		circles.add(new Circle(200,600,2500+50*18+12,3));
-		circles.add(new Circle(30,400,3500,1));//final note
+		colorChanges.add(new Integer[] {2100-12, 255, 255, 255});
+		circles.add(new Circle(600,600,2500+50*16+12,1));pulses.add(2500+50*16+12);
+		circles.add(new Circle(400,600,2500+50*17+12,2));pulses.add(2500+50*17+12);
+		circles.add(new Circle(200,600,2500+50*18+12,3));pulses.add(2500+50*18+12);
+		circles.add(new Circle(400,400,3500,1));pulses.add(3500);
+		
+		
 		//TEMPLATES
 		//circles.add(new Circle(200,200,950));
 		//sliders.add(new Slider(new int[] {100,200,300}, new int[] {200,250,350}, 250));
@@ -457,12 +477,41 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		g.drawPolygon(xPoints, yPoints, 10);
 	}
+	
 	public void spawnParticles(int num, int x, int y, int grav) {
 		for (int i = 0; i < num; i++) {
 			particles.add(new Particle(x,y,grav));
 		}
 	}
-
+	
+	public void endScreen(Graphics g) {
+		g.setFont(numberFont);
+		g.setColor(new Color(100,100,100));
+		g.fillRoundRect(100, 200, 600, 400, 100, 100);
+		
+		g.setColor(new Color(100, 255, 255));
+		g.drawString("300 ",150,275);
+		g.setColor(new Color(0, 255, 0));
+		g.drawString("100 ",150,375);
+		g.setColor(new Color(200, 100, 0));
+		g.drawString("50 ",150,475);
+		g.setColor(new Color(255, 0, 0));
+		g.drawString("X ",150,575);
+		
+		g.setColor(new Color(255, 255, 255));
+		for (int i = 0; i < results.length; i++) {
+			g.drawString("x"+results[i],275,575-100*i);
+		}
+		
+		g.setColor(new Color(255, 255, 255));
+		int percent = (int) Math.round(100*score/(totalScore+0.1));
+		g.drawString(percent+"%", 500, 575);
+		
+		g.setFont(new Font("Arial",0,250));
+		String grade = percent > 95 ? "S" : percent > 85 ? "A" : percent > 75 ? "B" : percent > 67 ? "C" : "D";
+		g.drawString(grade, 450, 475);
+	}
+	
 	Timer t;
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -507,7 +556,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		//System.out.println("Tick: "+tick);
+		System.out.println("Tick: "+tick);
 		mouseDown = true;
 	}
 
