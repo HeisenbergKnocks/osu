@@ -23,7 +23,7 @@ public class Circle {
 	
 	
 	public void mouse(int t, int mx, int my, boolean press) {
-		if (press && Math.sqrt((x-mx)*(x-mx)+(y-my)*(y-my))<100) {
+		if (press && Math.sqrt((x-mx)*(x-mx)+(y-my)*(y-my))<50) {
 			timeClicked = t;
 			finished = true;
 			completionFrame = true;
