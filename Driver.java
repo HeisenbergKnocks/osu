@@ -55,6 +55,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	int pulseIndex = 0;
 	int[] color = {0, 0, 0};
 	int[] targetColor = {255, 255, 255};
+	int[] borderColor = {0, 0, 0};
+	//mouse trail
+	int[] trailX = new int[15];
+	int[] trailY = new int[15];
+	
 	//keys
 	boolean keys[] = new boolean[256];
 	int mouseX = 0;
@@ -69,7 +74,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	@Override
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(new Color(0,0,0));
+		g.setColor(new Color(borderColor[0],borderColor[1],borderColor[2]));
 		g.fillRect(0, 0, 801, 801);
 		
 		g.setFont(scoreFont);
@@ -124,9 +129,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			g.setColor(m.getColor());
 			g.drawString(m.text, m.x, m.y);
 		}
+		//mouse trail
+		for (int i = 0; i < trailX.length-1; i++) {
+			g.setColor(new Color(255-(255/trailX.length)*i,255-(255/trailX.length)*i,255-(255/trailX.length)*i));
+			g.drawLine(trailX[i], trailY[i], trailX[i+1], trailY[i+1]);
+		}
 		
+		//mouse
+		g.setColor(new Color(255, 255, 255));
 		if (press) {
-			g.setColor(new Color(100, 100, 100));
+			g.setColor(new Color(175, 175, 175));
 		}
 		g.drawOval(mouseX-10, mouseY-10, 20, 20);
 	}
@@ -226,9 +238,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		if (pulseIndex<pulses.size())
 			if (tick == pulses.get(pulseIndex)) {
-				color[0] =  Math.min(color[0]+50, 255);
-				color[1] =  Math.min(color[1]+50, 255);
-				color[2] =  Math.min(color[2]+50, 255);
+				color[0] =  Math.min(color[0]+100, 255);
+				color[1] =  Math.min(color[1]+100, 255);
+				color[2] =  Math.min(color[2]+100, 255);
 				pulseIndex++;
 			}
 		
@@ -246,6 +258,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			press = false;
 		}
 		if (press&&tick%7==0) spawnParticles(1,mouseX,mouseY,4);
+		
+		//mouse trail
+		if (tick%2==0) {
+			trailX[0] = mouseX;
+			trailY[0] = mouseY;
+			for (int i = trailX.length-1; i > 0; i--) {
+				trailX[i] = trailX[i-1];
+				trailY[i] = trailY[i-1];
+			}
+		}
+		
 		//update tick
 		fulltick+=lagMultiplier;
 		tick = (int)fulltick;
@@ -318,9 +341,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(400,500,1100,7));
 		
 		pulses.add(1150-12);
+		pulses.add(1200-12);
 		pulses.add(1250-12);
-		pulses.add(1350-12);
-		pulses.add(1450-12);
+		pulses.add(1300-12);
 		circles.add(new Circle(100,600,1150-12,1));
 		sliders.add(new Slider(new int[] {250,350}, new int[] {600,600},1175-12,2));
 		circles.add(new Circle(500,600,1225-12,4));
@@ -389,12 +412,30 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(200,600,2800,7));
 		circles.add(new Circle(600,200,2825,8));
 		
+		circles.add(new Circle(500,200,2862,1));
+		circles.add(new Circle(400,200,2887,2));
+		circles.add(new Circle(300,200,2912,3));
+		circles.add(new Circle(200,200,2937,4));
 		
+		circles.add(new Circle(100,200,2962,5));
+		circles.add(new Circle(100,300,2987,6));
+		circles.add(new Circle(100,400,3012,7));
+		circles.add(new Circle(100,500,3025,8));
+		
+		circles.add(new Circle(200,500,3050,1));
+		circles.add(new Circle(200,400,3075,2));
+		circles.add(new Circle(200,300,3100,3));
+		circles.add(new Circle(200,200,3125,4));
+		
+		circles.add(new Circle(200,100,3150,5));
+		circles.add(new Circle(300,100,3175,6));
+		circles.add(new Circle(400,100,3200,7));
+		circles.add(new Circle(500,100,3225,8));
 		
 		//ending
-		circles.add(new Circle(600,600,2500+50*16,1));
-		circles.add(new Circle(400,600,2500+50*17,2));
-		circles.add(new Circle(200,600,2500+50*18,3));
+		circles.add(new Circle(600,600,2500+50*16+12,1));
+		circles.add(new Circle(400,600,2500+50*17+12,2));
+		circles.add(new Circle(200,600,2500+50*18+12,3));
 		circles.add(new Circle(30,400,3500,1));//final note
 		//TEMPLATES
 		//circles.add(new Circle(200,200,950));
