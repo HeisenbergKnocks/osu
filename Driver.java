@@ -122,7 +122,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			g.drawOval(s.getCircleX()-circleSize/2, s.getCircleY()-circleSize/2, circleSize, circleSize);
 		}
 		//end screen
-		if (tick>circles.get(circles.size()-1).startTime+100) {
+		if (tick>3600) {
 			endScreen(g);
 		}
 		//particles
@@ -279,7 +279,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		
 		//ending
-		if (tick==circles.get(circles.size()-1).startTime+100) {
+		if (tick==3600) {
 			spawnParticles(5,100,150,1);
 			spawnParticles(5,100,650,1);
 			spawnParticles(5,700,650,1);
