@@ -339,32 +339,32 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 		//the song starts at t=100
 		circles.add(new Circle(400,400,100,1));
-		circles.add(new Circle(500,300,250-12,2));
-		circles.add(new Circle(400,300,300-12,3));
-		circles.add(new Circle(500,200,350-12,4));
-		circles.add(new Circle(100,200,400-12,5));
+		circles.add(new Circle(500,300,250-13,2));
+		circles.add(new Circle(400,300,300-13,3));
+		circles.add(new Circle(500,200,350-13,4));
+		circles.add(new Circle(100,200,400-13,5));
 		
-		circles.add(new Circle(400,400,475,1));
-		circles.add(new Circle(500,300,525,2));
-		circles.add(new Circle(400,300,575,3));
-		circles.add(new Circle(500,200,625,4));
-		circles.add(new Circle(100,200,675,5));
-		circles.add(new Circle(200,200,725,6));
-		circles.add(new Circle(300,200,775,7));
-		circles.add(new Circle(400,400,825,8));
+		circles.add(new Circle(400,400,475-3,1));
+		circles.add(new Circle(500,300,525-3,2));
+		circles.add(new Circle(400,300,575-3,3));
+		circles.add(new Circle(500,200,625-3,4));
+		circles.add(new Circle(100,200,675-3,5));
+		circles.add(new Circle(200,200,725-5,6));
+		circles.add(new Circle(300,200,775-7,7));
+		circles.add(new Circle(400,400,825-10,8));
 		
 		
 		//theme 1 part 1
 		colorChanges.add(new Integer[] {950, 100, 255, 255});
-		circles.add(new Circle(100,200,950,1));
-		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},975, 2));
-		circles.add(new Circle(500,200,1025,4));
-		circles.add(new Circle(400,300,1050,5));
-		circles.add(new Circle(500,400,1075,6));
-		circles.add(new Circle(400,500,1100,7));
+		circles.add(new Circle(100,200,950-5,1));
+		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},975-5, 2));
+		circles.add(new Circle(500,200,1025-5,4));
+		circles.add(new Circle(400,300,1050-5,5));
+		circles.add(new Circle(500,400,1075-5,6));
+		circles.add(new Circle(400,500,1100-5,7));
 		
-		circles.add(new Circle(100,600,1150-12,1));pulses.add(1150-12);
-		sliders.add(new Slider(new int[] {250,350}, new int[] {600,600},1175-12,2));
+		circles.add(new Circle(100,600,1146,1));pulses.add(1150-12);
+		sliders.add(new Slider(new int[] {250,350}, new int[] {600,600},1175-5,2));
 		circles.add(new Circle(500,600,1225-12,4));
 		circles.add(new Circle(400,500,1250-12,5));
 		circles.add(new Circle(500,400,1275-12,6));
@@ -372,36 +372,36 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//theme 1 part 2
 		colorChanges.add(new Integer[] {1325, 255, 255, 0});
-		circles.add(new Circle(100,500,1325,1));pulses.add(1325);
-		circles.add(new Circle(100,200,1350,2));pulses.add(1350);
-		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},1375,3));
-		circles.add(new Circle(500,200,1425,5));pulses.add(1425);
-		circles.add(new Circle(500,400,1450,6));pulses.add(1450);
-		sliders.add(new Slider(new int[] {350,250}, new int[] {400,400},1475,7));
-		circles.add(new Circle(100,400,1525,9));
+		circles.add(new Circle(100,500,1315,1));pulses.add(1325);
+		circles.add(new Circle(100,200,1340,2));pulses.add(1350);
+		sliders.add(new Slider(new int[] {250,325}, new int[] {200,200},1360,3));
+		circles.add(new Circle(500,200,1407,5));pulses.add(1425);
+		circles.add(new Circle(500,400,1425,6));pulses.add(1450);
+		sliders.add(new Slider(new int[] {350,250}, new int[] {400,400},1445,7));
+		circles.add(new Circle(100,400,1497,9));
 		
-		circles.add(new Circle(100,300,1550-6,1));pulses.add(1550-6);
-		circles.add(new Circle(100,200,1575-6,2));
-		sliders.add(new Slider(new int[] {250,450}, new int[] {200,200},1600-6,3));
-		circles.add(new Circle(600,200,1650+6,5));pulses.add(1650+6);
+		circles.add(new Circle(100,300,1550-25,1));pulses.add(1550-6);
+		circles.add(new Circle(100,200,1575-25,2));
+		sliders.add(new Slider(new int[] {250,450}, new int[] {200,200},1600-25,3));
+		circles.add(new Circle(600,200,1660,5));pulses.add(1650+6);
 		
 		//theme 1 part 1 (again)
 		colorChanges.add(new Integer[] {1700, 100, 255, 255});
 		int o1 = 750;
-		circles.add(new Circle(100,200,950+o1,1));pulses.add(950+o1);
-		sliders.add(new Slider(new int[] {250,350}, new int[] {200,200},975+o1, 2));
-		circles.add(new Circle(500,200,1025+o1,4));
-		circles.add(new Circle(400,300,1050+o1,5));pulses.add(1050+o1);
-		circles.add(new Circle(500,400,1075+o1,6));
-		circles.add(new Circle(400,500,1100+o1,7));pulses.add(1100+o1);
+		circles.add(new Circle(100,200,950+o1+15,1));pulses.add(950+o1);
+		sliders.add(new Slider(new int[] {250,325}, new int[] {200,200},982+o1, 2));
+		circles.add(new Circle(500,200,1032+o1,4));
+		circles.add(new Circle(400,300,1057+o1,5));pulses.add(1050+o1);
+		circles.add(new Circle(500,400,1082+o1,6));
+		circles.add(new Circle(400,500,1107+o1,7));pulses.add(1100+o1);
 		
-		circles.add(new Circle(100,600,1150-12+o1,1));pulses.add(1150-12+o1);
-		sliders.add(new Slider(new int[] {250,350}, new int[] {600,600},1175-12+o1,2));
-		circles.add(new Circle(500,600,1225-12+o1,4));
-		circles.add(new Circle(400,500,1250-12+o1,5));
-		circles.add(new Circle(500,400,1275-21+o1,6));pulses.add(1275-21+o1);
-		circles.add(new Circle(400,300,1300-12+o1,7));
-		circles.add(new Circle(200,350,1325-12+o1,8));pulses.add(1325-12+o1);
+		circles.add(new Circle(100,600,1150+o1,1));pulses.add(1150-12+o1);
+		sliders.add(new Slider(new int[] {250,325}, new int[] {600,600},1174+o1,2));
+		circles.add(new Circle(500,600,1217+o1,4));
+		circles.add(new Circle(400,500,1242+o1,5));
+		circles.add(new Circle(500,400,1267+o1,6));pulses.add(1275-21+o1);
+		circles.add(new Circle(400,300,1292+o1,7));
+		circles.add(new Circle(200,350,1317+o1,8));pulses.add(1325-12+o1);
 		
 		//theme 1 part 3
 		colorChanges.add(new Integer[] {2100-12, 255, 255, 0});
@@ -424,14 +424,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		circles.add(new Circle(500,650,2550,3));
 		sliders.add(new Slider(new int[] {450,400}, new int[] {700,500}, 2575, 4));
 		
-		circles.add(new Circle(600,600,2650,1));pulses.add(2650);
-		circles.add(new Circle(200,200,2675,2));pulses.add(2675);
-		circles.add(new Circle(200,600,2700,3));pulses.add(2700);
-		circles.add(new Circle(600,200,2725,4));pulses.add(2725);
-		circles.add(new Circle(600,600,2750,5));pulses.add(2750);
-		circles.add(new Circle(200,200,2775,6));pulses.add(2775);
-		circles.add(new Circle(200,600,2800,7));pulses.add(2800);
-		circles.add(new Circle(600,200,2825,8));pulses.add(2825);
+		circles.add(new Circle(600,600,2660,1));pulses.add(2650);
+		circles.add(new Circle(200,200,2685,2));pulses.add(2675);
+		circles.add(new Circle(200,600,2710,3));pulses.add(2700);
+		circles.add(new Circle(600,200,2735,4));pulses.add(2725);
+		circles.add(new Circle(600,600,2760,5));pulses.add(2750);
+		circles.add(new Circle(200,200,2785,6));pulses.add(2775);
+		circles.add(new Circle(200,600,2810,7));pulses.add(2800);
+		circles.add(new Circle(600,200,2835,8));pulses.add(2825);
 		
 		colorChanges.add(new Integer[] {2862, 255, 255, 0});
 		circles.add(new Circle(500,200,2862,1));
@@ -457,10 +457,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//ending
 		colorChanges.add(new Integer[] {2100-12, 255, 255, 255});
-		circles.add(new Circle(600,600,2500+50*16+12,1));pulses.add(2500+50*16+12);
-		circles.add(new Circle(400,600,2500+50*17+12,2));pulses.add(2500+50*17+12);
-		circles.add(new Circle(200,600,2500+50*18+12,3));pulses.add(2500+50*18+12);
-		circles.add(new Circle(400,400,3500,1));pulses.add(3500);
+		circles.add(new Circle(600,600,2500+50*16+12+13,1));pulses.add(2500+50*16+12);
+		circles.add(new Circle(400,600,2500+50*17+12+6,2));pulses.add(2500+50*17+12);
+		circles.add(new Circle(200,600,2500+50*18+12+6,3));pulses.add(2500+50*18+12);
+		circles.add(new Circle(400,400,3513,1));pulses.add(3500);
 		
 		
 		//TEMPLATES
@@ -514,7 +514,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		g.drawString(percent+"%", 500, 575);
 		
 		g.setFont(new Font("Arial",0,250));
-		String grade = percent > 95 ? "S" : percent > 85 ? "A" : percent > 75 ? "B" : percent > 67 ? "C" : "D";
+		String grade = percent > 95 ? "S" : percent > 85 ? "A" : percent > 75 ? "B" : percent > 67 ? "C" : percent > 55 ? "D" : "F";
 		g.drawString(grade, 450, 475);
 	}
 	
